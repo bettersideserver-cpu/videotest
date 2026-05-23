@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Slider</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#000;
+    overflow:hidden;
+    font-family:Arial, sans-serif;
+}
+
+.container{
+    position:relative;
+    width:100vw;
+    height:100vh;
+}
+
+video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    pointer-events:none;
+}
+
+/* SLIDER */
+
+.slider-container{
+    position:absolute;
+    bottom:30px;
+    left:50%;
+    transform:translateX(-50%);
+    width:80%;
+    z-index:10;
+}
+
+input[type="range"]{
+    width:100%;
+    appearance:none;
+    height:6px;
+    border-radius:10px;
+    background:rgba(255,255,255,0.3);
+    outline:none;
+}
+
+input[type="range"]::-webkit-slider-thumb{
+    appearance:none;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    background:white;
+    cursor:pointer;
+}
+
+/* SVG BUTTONS */
+
+.svg-container{
+    position:absolute;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:40px;
+    opacity:0;
+    pointer-events:none;
+    transition:0.4s;
+    z-index:20;
+}
+
+.svg-container.show{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.svg-btn{
+    width:90px;
+    height:90px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.svg-btn:hover{
+    transform:scale(1.1);
+}
+
+.svg-btn svg{
+    width:100%;
+    height:100%;
+    fill:white;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- VIDEO -->
+
+    <video id="video" preload="auto" playsinline>
+        <source src="video.mp4" type="video/mp4">
+    </video>
+
+    <!-- SVG CODE BUTTONS -->
+
+    <div class="svg-container" id="svgContainer">
+
+        <a href="garden.html" class="svg-btn">
+
+            <!-- PASTE SVG CODE HERE -->
+
+            <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"/>
+            </svg>
+
+        </a>
+
+        <a href="gym.html" class="svg-btn">
+
+            <!-- PASTE SVG CODE HERE -->
+
+            <svg viewBox="0 0 24 24">
+                <rect x="4" y="4" width="16" height="16"/>
+            </svg>
+
+        </a>
+
+        <a href="temple.html" class="svg-btn">
+
+            <!-- PASTE SVG CODE HERE -->
+
+            <svg viewBox="0 0 24 24">
+                <polygon points="12,2 22,22 2,22"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <!-- SLIDER -->
+
+    <div class="slider-container">
+        <input type="range" id="slider" min="0" max="1000" value="0">
+    </div>
+
+</div>
+
+<script>
+
+const video = document.getElementById("video");
+const slider = document.getElementById("slider");
+const svgContainer = document.getElementById("svgContainer");
+
+video.addEventListener("loadedmetadata", () => {
+
+    slider.addEventListener("input", () => {
+
+        const progress = slider.value / 1000;
+
+        video.currentTime = progress * video.duration;
+
+        // SHOW SVGs AT END
+
+        if(video.currentTime >= video.duration - 1){
+            svgContainer.classList.add("show");
+        }else{
+            svgContainer.classList.remove("show");
+        }
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
